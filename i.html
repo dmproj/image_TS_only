@@ -2,30 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
 <body>
-  <style>
-    body * {
-      margin: 10px;
-      border: 1px solid blue;
-    }
-  </style>
-  
-  <form>FORM
-    <div>DIV
-      <p>P</p>
-    </div>
-  </form>
+  <pre id="rabbit">
+    |\   /|
+     \|_|/
+     /. .\
+    =\_Y_/=
+     {>o<}
+  </pre>
+  <button onclick="hide()">Hide()</button>
   
   <script>
-    for(let elem of document.querySelectorAll('*')) {
-      elem.addEventListener("click", e => alert(`Capturing: ${elem.tagName}`), true);
-      elem.addEventListener("click", e => alert(`Bubbling: ${elem.tagName}`));
-   
+    function hide() {
+      let event = new CustomEvent("hide", {
+        
+        cancelable: true // without that flag preventDefault doesn't work
+      });
+      console.log("1")
+      if (!rabbit.dispatchEvent(event)) {
+        console.log("2")
+        alert('The action was prevented by a handler');
+      } else {
+        rabbit.hidden = true;
+      }
     }
+  
+    rabbit.addEventListener('hide', function(event) {
+      console.log("3")
+      if (confirm("Call preventDefault?")) {
+        console.log("4")
+        event.preventDefault();
+      }
+    });
   </script>
 </body>
 </html>
